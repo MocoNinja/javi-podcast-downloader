@@ -57,9 +57,7 @@ def _create_downloader_config():
 
 
 def _get_download_path(root_download_folder="downloads"):
-    curr_dir_for_this_file = path.dirname(
-        path.abspath(__file__)
-    )
+    curr_dir_for_this_file = path.dirname(path.abspath(__file__))
     dest_dir = path.join(
         curr_dir_for_this_file, "..", "..", root_download_folder, destination_folder
     )

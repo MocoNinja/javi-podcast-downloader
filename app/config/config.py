@@ -1,7 +1,7 @@
 from app.config import constants
 import logging
 
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.DEBUG
 
 # TODO: un map to guapo que devuelva un struct o el equivalente oligofrénico que tenga python
 channel_url = constants.URL_DARKSOUL_HORROR

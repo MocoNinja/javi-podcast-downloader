@@ -18,11 +18,11 @@ def main():
 def scrape_channel():
     log.info(
         f"""Scrapping with config:
-        | url: {config.channel_url}
-        | channel_id: {config.channel_id}
-        | provider: {config.provider}
-        | provider_id: {config.provider_id}
-    """
+            | url: {config.channel_url}
+            | channel_id: {config.channel_id}
+            | provider: {config.provider}
+            | provider_id: {config.provider_id}
+        """
     )
 
     # Todo: mejor flujo
@@ -33,12 +33,12 @@ def scrape_channel():
 def download_videos():
     log.info(
         f"""Downloading videos with config:
-        | url: {config.channel_url}
-        | channel_id: {config.channel_id}
-        | provider: {config.provider}
-        | provider_id: {config.provider_id}
-        | destination: {config.destination_folder}
-    """
+            | url: {config.channel_url}
+            | channel_id: {config.channel_id}
+            | provider: {config.provider}
+            | provider_id: {config.provider_id}
+            | destination: {config.destination_folder}
+        """
     )
     download_missing_videos_from_channel_and_provider()
 

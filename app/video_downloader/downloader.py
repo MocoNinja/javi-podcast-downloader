@@ -1,13 +1,18 @@
-from app.config import ROOT_LOGGER as log, channel_id, provider_id
-from app.config import channel_id
-from app.config import provider_id
-from app.config import sleep_between_download_videos_seconds
-from app.config import destination_folder
-
-from app.video import get_not_already_downloaded_videos, set_video_as_downloaded
+from app.common.config import (
+    channel_id,
+    provider_id,
+    destination_folder,
+    sleep_between_download_videos_seconds,
+)
+from app.common.logger import ROOT_LOGGER as log
 import yt_dlp as ytl_dlp
 from os import path
 from time import sleep
+
+from app.video.video_service import (
+    get_not_already_downloaded_videos,
+    set_video_as_downloaded,
+)
 
 DOWNLOADER = None
 
@@ -19,7 +24,12 @@ def download_missing_videos_from_channel_and_provider():
     log.debug(f"Videos to download are: {videos_to_download}")
     for video in videos_to_download:
         try:
-            log.info(f"Downloading {video}...")
+            log.info(f"Downloading and parsing {video}...")
+            info_dict = DOWNLOADER.extract_info(video[5], download=False)
+            upload_time = info_dict.get(
+                "upload_date"
+            )  # returns date in YYYYMMDD format
+            log.info(f"Info Found | Upload: {upload_time}")
             DOWNLOADER.download(video[5])
         except Exception as e:
             log.error(
@@ -49,6 +59,7 @@ def _setup():
 def _create_downloader_config():
     download_dir = _get_download_path()
     ydl_opts = {
+        "quiet": True,  # I want my own logs
         "format": "bestaudio/best",  # Download the best audio quality available
         "outtmpl": f"{download_dir}/%(title)s.%(ext)s",  # Output filename format
     }

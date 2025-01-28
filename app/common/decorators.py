@@ -1,6 +1,6 @@
 import functools
 import re
-from app.config import ROOT_LOGGER as log
+from app.common.logger import ROOT_LOGGER as log
 
 
 def sql_logger(func):
@@ -15,15 +15,15 @@ def sql_logger(func):
         sql = kwargs.get("query", None)
         params = {key: value for key, value in kwargs.items() if key != "query"}
         # Clean format for logging
-        sql = re.sub(r"\s+", " ", sql.strip())
-        name = name.strip()
+        if name is not None and sql is not None:
+            sql = re.sub(r"\s+", " ", sql.strip())
+            name = name.strip()
 
-        if sql is not None:
             log.debug(
                 f"""Query: {name}
-                    -> SQL: {sql}
-                    -> Params: {params}
-                """
+                        -> SQL: {sql}
+                        -> Params: {params}
+                    """
             )
         return func(*args, **kwargs)
 

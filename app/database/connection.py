@@ -1,6 +1,9 @@
 import sqlite3
 from os import path
-from app.config import ROOT_LOGGER as log
+from pathlib import Path
+from app.common.logger import ROOT_LOGGER as log
+import os
+import sys
 
 conn = None
 
@@ -27,6 +30,8 @@ def _load_database():
 
 
 def _get_database_path(filename="database.db"):
+    var = os.path.dirname(sys.modules["__main__"].__file__)
+    var2 = Path(var).parent
     curr_dir_for_this_file = path.dirname(
         path.abspath(__file__)
     )  # Current directory of this file

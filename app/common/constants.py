@@ -1,3 +1,6 @@
+import re
+from app.video.video_filter import VideoFilter
+
 # TODO: pensar en algun enum que carge info de base de datos o alguna mierda?
 
 URL_DARKSOUL_HORROR = "https://www.youtube.com/@DarksoulHorror/videos"
@@ -14,3 +17,9 @@ FOLDER_WILD_PROJECT = "the_wild_project"
 
 PROVIDER_YOUTUBE = "YOUTUBE"
 PROVIDER_YOUTUBE_ID = 1
+
+FILTER_DARKSOUL_HORROR = None
+FILTER_BAGS_GARAGE = None
+FILTER_WILD_PROJECT = VideoFilter(
+    video_title=lambda video: re.match(r"The Wild Project #\d+ .+", video.video_title)
+)

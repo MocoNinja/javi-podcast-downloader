@@ -1,6 +1,6 @@
 import logging
 
-from app.config import config
+from app.common import config
 
 _ROOT_LOGGER_NAME = "SCRAPPER_LOGGER"
 ROOT_LOGGER = None

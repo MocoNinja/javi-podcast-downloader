@@ -1,10 +1,10 @@
 from sqlite3 import IntegrityError
 
+from app.common.decorators import sql_logger
+from app.database.connection import conn
 from app.video.video_dto import VideoDto
-from app.database import conn
-from app.utils import sql_logger
 
-from app.config import ROOT_LOGGER as log
+from app.common.logger import ROOT_LOGGER as log
 
 _VIDEO_TABLE = "videos"
 
@@ -105,9 +105,7 @@ def insert_video(
 
 
 @sql_logger
-def update_video_downloaded_flag(query: str,
-                                 id: str,
-                                 status: int):
+def update_video_downloaded_flag(query: str, id: str, status: int):
     # Recordar para el futuro que python es un hdlgp oligofrénico y si la query es un solo param, es (item[0],)
     sql_params = (status, id)
     conn.execute(query, sql_params)

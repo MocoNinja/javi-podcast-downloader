@@ -1,0 +1,61 @@
+// VIDEOS
+
+// Primera página -> un ojo ha brotado de mi cuello
+
+const xpath = '/html/body/ytd-app/div[1]/ytd-page-manager/ytd-browse/ytd-two-column-browse-results-renderer/div[1]/ytd-rich-grid-renderer//ytd-rich-item-renderer';
+
+const result = document.evaluate(
+  xpath,
+  document,
+  null,
+  XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+  null
+);
+
+
+const initialItems = [];
+for (let i = 0; i < result.snapshotLength; i++) {
+  initialItems.push(result.snapshotItem(i));
+}
+
+const initialLength = initialItems.length;
+
+
+// Scroll down; UN MONSTRUO ME DA UN BESO TODAS LAS NOCHES; asumimos que se han cargado initialLength elementos [parece correcto, 30 videos por scroll]
+
+
+// PRIMERO 					INDEX 0  || XPATH //*[@id="contents"]/ytd-rich-item-renderer[1]
+// ÚLTIMO PRIMERA PÁGINA    INDEX 29 || XPATH //*[@id="contents"]/ytd-rich-item-renderer[30]
+// ES DECIR EL XPATH NO ESTÁ 0 INDEXED!!!
+
+let startIndex = initialLength;                     // 30 (INDEX 29 SI LO HUBIESE)
+let endIndex = startIndex + initialLength;          // 60 (INDEX 59 SI LO HUBIESE)  
+let newItemsXPath = `//ytd-rich-item-renderer[position() > ${startIndex} and position() <= ${endIndex}]`;
+
+let newItemsResult = document.evaluate(
+	newItemsXPath,
+	document,
+	null,
+	XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+	null
+);
+
+
+let newItems = [];
+for (let i = 0; i < newItemsResult.snapshotLength; i++) {
+	newItems.push(newItemsResult.snapshotItem(i));
+}
+
+// OTRO SCROLL DOWN
+startIndex += result.snapshotLength;  //(o lo que es lo mismo, initialLength + initialLength [porque se esta cumpliendo que se cumple que se cargan siempre los mismos datos[)
+endIndex   += result.snapshotLength; // LO analogo
+
+
+  
+  
+  
+
+
+
+
+

@@ -24,6 +24,14 @@ _SQL_GET_VIDEOS_BY_CHANNEL_PLATFORM_AND_DOWNLOADED_FLAG = f"""
             AND video_platform_id = ?
             AND downloaded = ?
 """
+
+_SQL_CHECK_IF_VIDEO_OF_CHANNEL_PLATFORM_AND_VIDEO_ID_EXISTS = f"""
+    SELECT id from {_VIDEO_TABLE}
+       WHERE channel_id = ?
+            AND  video_platform_id = ?
+            AND video_id = ?
+LIMIT 1
+"""
 # </editor-fold>
 
 # <editor-fold desc="QUERIES -- UPDATE">
@@ -36,7 +44,7 @@ _SQL_UPDATE_VIDEO_DOWNLOADED_FLAG = f"""
 
 
 def get_not_already_downloaded_videos(channel_id: int, source_id: int):
-    return find_videos_by_channel_source_and_download_status(
+    return _find_videos_by_channel_source_and_download_status(
         query=_SQL_GET_VIDEOS_BY_CHANNEL_PLATFORM_AND_DOWNLOADED_FLAG,
         channel_id=channel_id,
         source_id=source_id,
@@ -44,8 +52,19 @@ def get_not_already_downloaded_videos(channel_id: int, source_id: int):
     )
 
 
+def check_if_video_exists_for_channel_id_source_id_by_video_id(
+    channel_id: int, source_id: int, video_id
+):
+    return _check_if_video_exists_for_channel_id_source_id_by_video_id(
+        query=_SQL_CHECK_IF_VIDEO_OF_CHANNEL_PLATFORM_AND_VIDEO_ID_EXISTS,
+        channel_id=channel_id,
+        source_id=source_id,
+        video_id=video_id,
+    )
+
+
 def save_video(video: VideoDto, channel_id: int, provider_id: int):
-    return insert_video(
+    return _insert_video(
         query=_SQL_INSERT_VIDEO,
         video_title=video.video_title,
         downloaded_flag=False,
@@ -57,16 +76,16 @@ def save_video(video: VideoDto, channel_id: int, provider_id: int):
 
 
 def set_video_as_downloaded(video: VideoDto):
-    return update_video_downloaded_flag(
+    return _update_video_downloaded_flag(
         query=_SQL_UPDATE_VIDEO_DOWNLOADED_FLAG, id=video[0], status=1
     )
 
 
 @sql_logger
-def find_videos_by_channel_source_and_download_status(
+def _find_videos_by_channel_source_and_download_status(
     query: str, channel_id: int, source_id: int, downloaded_flag: int
 ):
-    params = (channel_id, source_id, 0)
+    params = (channel_id, source_id, downloaded_flag)
     cursor = conn.cursor()
 
     try:
@@ -79,7 +98,23 @@ def find_videos_by_channel_source_and_download_status(
 
 
 @sql_logger
-def insert_video(
+def _check_if_video_exists_for_channel_id_source_id_by_video_id(
+    query: str, channel_id: int, source_id: int, video_id
+):
+    params = (channel_id, source_id, video_id)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(query, params)
+    except Exception as e:
+        log.error(
+            f"Unexpected error when checking if video exists with video id {video_id} by channel {channel_id} and source {source_id}: {e}"
+        )
+    return len(cursor.fetchall()) > 0
+
+
+@sql_logger
+def _insert_video(
     query: str,
     video_title: str,
     downloaded_flag: int,
@@ -105,7 +140,7 @@ def insert_video(
 
 
 @sql_logger
-def update_video_downloaded_flag(query: str, id: str, status: int):
+def _update_video_downloaded_flag(query: str, id: str, status: int):
     # Recordar para el futuro que python es un hdlgp oligofrénico y si la query es un solo param, es (item[0],)
     sql_params = (status, id)
     conn.execute(query, sql_params)

@@ -8,7 +8,6 @@ from app.common.logger import ROOT_LOGGER as log
 from app.common.config import headless
 
 
-
 class ScrapperType(Enum):
     FIREFOX = (1,)
     CHROME = 2
@@ -16,6 +15,8 @@ class ScrapperType(Enum):
 
 def create_scrapper(scrapper_type: ScrapperType):
     log.info(f"Create scrapper of type {scrapper_type}")
+    if scrapper_type == ScrapperType.CHROME:
+        log.warn("WARNING! In my testing, I could see that Chrome works like 💩")
     driver_class, options_class = _get_driver_for_type(scrapper_type)
     options = options_class()
 

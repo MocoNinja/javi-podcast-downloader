@@ -1,5 +1,6 @@
 from app.common.logger import ROOT_LOGGER as log
 from app.common import config
+from app.video.video_service import save_video
 from app.video_downloader.downloader import (
     download_missing_videos_from_channel_and_provider,
 )
@@ -26,7 +27,7 @@ def scrape_channel():
     # Todo: mejor flujo
     for _, item in scrape_youtube().items():
         log.info(f"Saving scrapped video: {item}")
-        # save_video(item, config.channel_id, config.provider_id)
+        save_video(item, config.channel_id, config.provider_id)
 
 
 def download_videos():

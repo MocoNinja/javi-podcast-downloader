@@ -1,5 +1,6 @@
 from sqlite3 import IntegrityError
 
+from app.common.config import provider_id
 from app.common.decorators import sql_logger
 from app.database.connection import conn
 from app.video.video_dto import VideoDto
@@ -72,7 +73,22 @@ def save_video(video: VideoDto, channel_id: int, provider_id: int):
         video_id=video.video_id,
         video_url=video.video_url,
         provider_id=provider_id,
+        commit=True,
     )
+
+
+def save_videos(videos, channel_id, provider_id):
+    for video in videos:
+        _insert_video(
+            query=_SQL_INSERT_VIDEO,
+            video_title=video.video_title,
+            downloaded_flag=False,
+            channel_id=channel_id,
+            video_id=video.video_id,
+            video_url=video.video_url,
+            provider_id=provider_id,
+        )
+    conn.commit()
 
 
 def set_video_as_downloaded(video: VideoDto):
@@ -122,6 +138,7 @@ def _insert_video(
     video_id: str,
     video_url: str,
     provider_id: int,
+    commit: bool = False,
 ):
     params = (
         video_title,
@@ -133,8 +150,10 @@ def _insert_video(
     )
     try:
         conn.execute(query, params)
+        if commit:
+            conn.commit()
     except IntegrityError as e:
-        log.warn(f"Skipping dupe item {video_title}. Error: {e}")
+        log.debug(f"Skipping dupe item {video_title}. Error: {e}")
     except Exception as e:
         log.error(f"Unexpected error when saving video {video_title}: {e}")
 

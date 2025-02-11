@@ -18,7 +18,7 @@ from app.video_scrapper.scrapper_youtube import scrape_youtube_videos
 def main():
     # TODO: una cli de esas guapas con la librería esa famosa
     scrape_channel()
-    # download_videos()
+    download_videos()
 
 
 def scrape_channel():

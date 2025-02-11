@@ -6,14 +6,17 @@ from app.video.video_filter import VideoFilter
 URL_DARKSOUL_HORROR = "https://www.youtube.com/@DarksoulHorror/videos"
 URL_BAGS_GARAGE = "https://www.youtube.com/@BagsGarage/videos"
 URL_WILD_PROJECT = "https://www.youtube.com/@TheWildProject/videos"
+URL_NOCHE_MACABRA = "https://www.youtube.com/@NocheMacabra_/videos"
 
 ID_DARKSOUL_HORROR = 1
 ID_BAGS_GARAGE = 2
 ID_WILD_PROJECT = 3
+ID_NOCHE_MACABRA = 4
 
 FOLDER_DARKSOUL_HORROR = "darksoul_horror"
 FOLDER_BAGS_GARAGE = "bags_garage"
 FOLDER_WILD_PROJECT = "the_wild_project"
+FOLDER_NOCHE_MACABRA = "noche_macabra"
 
 PROVIDER_YOUTUBE = "YOUTUBE"
 PROVIDER_YOUTUBE_ID = 1
@@ -23,3 +26,4 @@ FILTER_BAGS_GARAGE = None
 FILTER_WILD_PROJECT = VideoFilter(
     video_title=lambda video: re.match(r"The Wild Project #\d+ .+", video.video_title)
 )
+FILTER_NOCHE_MACABRA = None

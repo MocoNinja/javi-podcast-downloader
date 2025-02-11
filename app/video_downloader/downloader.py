@@ -59,9 +59,16 @@ def _setup():
 def _create_downloader_config():
     download_dir = _get_download_path()
     ydl_opts = {
-        "quiet": True,  # I want my own logs
-        "format": "bestaudio/best",  # Download the best audio quality available
-        "outtmpl": f"{download_dir}/%(title)s.%(ext)s",  # Output filename format
+        "quiet": True,
+        "format": "bestaudio",
+        "postprocessors": [
+            {
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "vorbis",
+                "preferredquality": "192",
+            }
+        ],
+        "outtmpl": f"{download_dir}/%(upload_date)s_%(title)s.%(ext)s",
     }
     log.info(f"Created youtube downloader config: {ydl_opts}")
     return ydl_opts

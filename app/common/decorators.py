@@ -1,10 +1,17 @@
 import functools
+import logging
 import re
-from app.common.logger import ROOT_LOGGER as log
+
+from app.common.logger import log
+
+"""
+    Utility decorators used among the application.
+"""
 
 
-def sql_logger(func):
+def sql_logger(func, level=logging.DEBUG):
     """Decorator to log a query at debug (TODO? Config?)
+    :param level: the log level
     :param func: the query that will be logged. MUST HAVE "query" FIELD
     :return:
     """
@@ -18,12 +25,12 @@ def sql_logger(func):
         if name is not None and sql is not None:
             sql = re.sub(r"\s+", " ", sql.strip())
             name = name.strip()
-
-            log.debug(
+            log(
+                level,
                 f"""Query: {name}
                         -> SQL: {sql}
                         -> Params: {params}
-                    """
+                    """,
             )
         return func(*args, **kwargs)
 

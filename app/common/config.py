@@ -1,23 +1,42 @@
 import logging
-import app.common.constants as constants
 
-LOG_LEVEL = logging.INFO
+from app.video_scrapper.scrapper_type import ScrapperType
 
-# TODO: un map to guapo que devuelva un struct o el equivalente oligofrénico que tenga python
+"""
+    Several constants used for common configuration among the application.
+"""
 
-channel_url = constants.URL_NOCHE_MACABRA
-channel_id = constants.ID_NOCHE_MACABRA
-destination_folder = constants.FOLDER_NOCHE_MACABRA
-scrapping_filter = constants.FILTER_NOCHE_MACABRA
+"""
+    Log level for the app
+"""
+LOG_LEVEL = logging.DEBUG
 
-provider = constants.PROVIDER_YOUTUBE
-provider_id = constants.PROVIDER_YOUTUBE_ID
+"""
+    The browser that the webdriver uses
+"""
+scrapper_type = ScrapperType.CHROME
 
-
+"""
+    Delay between downloading videos
+"""
 sleep_between_download_videos_seconds = 2
+
+"""
+    Delay between steps in the scrapping process
+"""
 sleep_scrapper_seconds = 5
+
+"""
+    Delay between scrolling the page to fetch new videos
+"""
 sleep_between_scroll_seconds = 1.5
 
-headless = True
-# Scroll all pages even if there are repeated items
-force_full_scroll: bool = True
+"""
+    If the webdriver should open a window or not
+"""
+headless = False
+
+"""
+    Scroll all pages even if there are repeated items
+"""
+force_full_scroll: bool = False

@@ -1,22 +1,17 @@
-from enum import Enum
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
-from app.common.logger import ROOT_LOGGER as log
 from app.common.config import headless
-
-
-class ScrapperType(Enum):
-    FIREFOX = (1,)
-    CHROME = 2
+from app.common.logger import fatal, info, warning
+from app.video_scrapper.scrapper_type import ScrapperType
 
 
 def create_scrapper(scrapper_type: ScrapperType):
-    log.info(f"Create scrapper of type {scrapper_type}")
+    info(f"Create scrapper of type {scrapper_type}")
     if scrapper_type == ScrapperType.CHROME:
-        log.warn("WARNING! In my testing, I could see that Chrome works like 💩")
+        warning("WARNING! In my testing, I could see that Chrome works like 💩")
     driver_class, options_class = _get_driver_for_type(scrapper_type)
     options = options_class()
 
@@ -32,9 +27,10 @@ def _get_driver_for_type(scrapper_type: ScrapperType):
     elif scrapper_type == ScrapperType.CHROME:
         return webdriver.Chrome, ChromeOptions
     else:
-        raise Exception(f"Unhandled scrapper type {scrapper_type}")
+        fatal(f"Unhandled scrapper type {scrapper_type}")
+        exit(1)
 
 
-def _configure_options(headless: bool, options: DesiredCapabilities):
-    if headless:
+def _configure_options(headless_webdriver: bool, options: DesiredCapabilities):
+    if headless_webdriver:
         options.add_argument("--headless")

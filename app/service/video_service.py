@@ -95,10 +95,7 @@ def set_video_as_downloaded(video: VideoDto) -> None:
     downloaded_status = 1
     _update_some_params(
         query=_SQL_UPDATE_VIDEO_DOWNLOADED_FLAG,
-        params= (
-            video.video_id,
-            downloaded_status
-        )
+        params=(video.video_id, downloaded_status),
     )
 
 
@@ -147,5 +144,4 @@ def _update_some_params(query: str, params: tuple) -> int:
     :param params: to set
     :return: the amount of updated items
     """
-    return update(query=query,
-           params=params)
+    return update(query=query, params=params)

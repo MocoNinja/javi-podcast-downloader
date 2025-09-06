@@ -22,7 +22,10 @@ def _setup() -> None:
 def main():
     _setup()
     ctx = get_context()
-    scrape_channel(ctx.channels_to_scrape[0])
+    scrape_channel(ctx.get_channel_by_name("WILD_PROJECT"))
+    for channel in ctx.channels_to_scrape:
+        info(f"Scrapping channel: {channel}")
+        scrape_channel(channel)
 
 
 def scrape_channel(channel: Channel):
@@ -36,10 +39,11 @@ def scrape_channel(channel: Channel):
     )
 
     ## Make sure the p save_videos(videos, channel.id, channel.video_platform.id)
-    videos = scrape_youtube_videos(channel).values()
-    info(f"Saving scrapped videos: {videos}")
+    videos = scrape_youtube_videos(channel)
+    info(f"Scrapped videos: {videos}")
+    videos = [x for x in videos if x is not None]
+    info(f"Saving filtered scrapped videos: {videos}")
     save_videos(videos)
-
 
 
 def download_videos(channel: Channel):

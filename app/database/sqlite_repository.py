@@ -38,7 +38,7 @@ def _execute_query(query: str, params: tuple, commit: bool = False) -> Cursor:
         err = NonFatalDatabaseError(
             query, params, e, "Error due to data integrity constraints"
         )
-        logging.error(err)
+        logging.debug(err)
         raise err
 
     except (

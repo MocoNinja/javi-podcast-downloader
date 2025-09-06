@@ -9,7 +9,7 @@ from app.model.video_filter import VideoFilterConfiguration
 from app.model.video_platform import ConfiguredVideoProvider
 
 
-def _parse_youtube_video_for_url(video, channel):
+def _parse_youtube_video_for_url(video, channel) ->  VideoDto:
     """
     Get the information for a youtube video from scrapping.
     Some information, like upload date, cannot be obtained in a reliable way through scrapping but yes with yt-ldp (as
@@ -36,7 +36,7 @@ def _parse_youtube_video_for_url(video, channel):
 
     filtered_item = _filter_if_applies(item, channel.filter)
 
-    return url, filtered_item
+    return filtered_item
 
 
 def _filter_if_applies(video, configured_filter: VideoFilterConfiguration):

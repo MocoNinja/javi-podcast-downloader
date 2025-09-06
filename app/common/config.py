@@ -9,7 +9,7 @@ from app.video_scrapper.scrapper_type import ScrapperType
 """
     Log level for the app
 """
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 
 """
     The browser that the webdriver uses
@@ -24,19 +24,19 @@ sleep_between_download_videos_seconds = 2
 """
     Delay between steps in the scrapping process
 """
-sleep_scrapper_seconds = 5
+sleep_scrapper_seconds = 2
 
 """
     Delay between scrolling the page to fetch new videos
 """
-sleep_between_scroll_seconds = 1.5
+sleep_between_scroll_seconds = 1.0
 
 """
     If the webdriver should open a window or not
 """
-headless = False
+headless = True
 
 """
     Scroll all pages even if there are repeated items
 """
-force_full_scroll: bool = False
+force_full_scroll: bool = True

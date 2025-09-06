@@ -20,7 +20,7 @@ class VideoDto:
         self.video_title = video_title
         self.video_platform = video_platform
         self.channel_id = channel_id
-        self.provider_id = provider_id # TODO: this is redundant if we store the entity
+        self.provider_id = provider_id  # TODO: this is redundant if we store the entity
         self.downloaded_flag = downloaded_flag
         if scrap_timestamp is not None:
             self.scrap_timestamp = scrap_timestamp

@@ -50,3 +50,15 @@ class MissingItemException(Exception):
 
     def __str__(self):
         return f"MissingItemException: {self.message}"
+
+
+class ScrappingError(Exception):
+    """Raised when an error happens while scrapping"""
+
+    def __init__(self, message: str, root: Exception):
+        self.message = f"Error scrapping: {message} | Root cause: {root}"
+        self.root = root
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f"ScrappingError: {self.message}"

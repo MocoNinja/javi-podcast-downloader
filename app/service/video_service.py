@@ -1,5 +1,10 @@
 from app.common.logger import debug
-from app.database.sqlite_repository import insert, select_multiple, update
+from app.database.sqlite_repository import (
+    insert,
+    select_multiple,
+    select_single,
+    update,
+)
 from app.error.errors import NonFatalDatabaseError
 from app.model.video_dto import VideoDto
 
@@ -22,11 +27,9 @@ _SQL_GET_VIDEOS_BY_CHANNEL_PLATFORM_AND_DOWNLOADED_FLAG = f"""
             AND downloaded = ?
 """
 
-_SQL_CHECK_IF_VIDEO_OF_CHANNEL_PLATFORM_AND_VIDEO_ID_EXISTS = f"""
+_SQL_CHECK_IF_VIDEO_WITH_ID_ALREADY_EXISTS = f"""
     SELECT id from {_TABLE}
-       WHERE channel_id = ?
-            AND  video_platform_id = ?
-            AND video_id = ?
+       WHERE video_id = ?
 LIMIT 1
 """
 # </editor-fold>
@@ -54,20 +57,17 @@ def get_not_already_downloaded_videos(channel_id: int, source_id: int) -> list[t
     )
 
 
-def check_if_video_exists_for_channel_id_source_id_by_video_id(
-    channel_id: int, source_id: int, video_id: int
-) -> list[tuple]:
+def video_exists_by_video_id(video_id: int) -> bool:
     """
-    Find id the given video exists for the channel and source
-    :param channel_id:  the channel
-    :param source_id:  the source
-    :param video_id:  the video
-    :return:
+    Find id the given video exists in the database
+    :param video_id:  the video to find
+    :return: if we have it or not
     """
-    return _fetch_videos(
-        query=_SQL_CHECK_IF_VIDEO_OF_CHANNEL_PLATFORM_AND_VIDEO_ID_EXISTS,
-        params=(channel_id, source_id, video_id),
+    result = select_single(
+        query=_SQL_CHECK_IF_VIDEO_WITH_ID_ALREADY_EXISTS, params=(video_id,)
     )
+
+    return result is not None
 
 
 def save_video(video: VideoDto) -> None:

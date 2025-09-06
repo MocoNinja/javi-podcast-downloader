@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.common.logger import fatal, debug
+from app.common.logger import fatal
 from app.error.errors import MissingItemException
 from app.model.channel import Channel
 from app.model.video_platform import ConfiguredVideoProvider, VideoPlatform
@@ -40,18 +40,20 @@ class _Context:
         :param channel_name: to find the channel by
         :return: the whole channel
         """
-        matching = next(filter(lambda c: c.name == channel_name, self.channels_to_scrape), None)
+        matching = next(
+            filter(lambda c: c.name == channel_name, self.channels_to_scrape), None
+        )
         if matching is None:
-            raise MissingItemException(f"Channel with name '{channel_name}' was not found")
+            raise MissingItemException(
+                f"Channel with name '{channel_name}' was not found"
+            )
         return matching
-
 
 
 """
     Global context to be used after loading (needs to be loaded)
 """
 context: _Context | None
-
 
 
 def get_context() -> _Context:

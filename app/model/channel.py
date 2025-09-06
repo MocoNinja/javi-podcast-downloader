@@ -7,7 +7,7 @@ from app.model.video_platform import VideoPlatform
 @dataclass
 class Channel:
     """
-    The representation of a channel we want to scrape
+    The representation of a channel we want to scrape videos from
     """
 
     id: int

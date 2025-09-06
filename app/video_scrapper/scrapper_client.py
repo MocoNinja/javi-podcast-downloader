@@ -3,9 +3,8 @@ from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
-from app.common.config import headless
+from app.common.config import ScrapperType, headless
 from app.common.logger import fatal, info, warning
-from app.video_scrapper.scrapper_type import ScrapperType
 
 
 def create_scrapper(scrapper_type: ScrapperType):

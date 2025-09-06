@@ -1,6 +1,11 @@
 import logging
+from enum import Enum
 
-from app.video_scrapper.scrapper_type import ScrapperType
+
+class ScrapperType(Enum):
+    FIREFOX = (1,)
+    CHROME = 2
+
 
 """
     Several constants used for common configuration among the application.
@@ -14,7 +19,7 @@ LOG_LEVEL = logging.INFO
 """
     The browser that the webdriver uses
 """
-scrapper_type = ScrapperType.CHROME
+configured_scrapper_type = ScrapperType.CHROME
 
 """
     Delay between downloading videos
@@ -39,4 +44,4 @@ headless = True
 """
     Scroll all pages even if there are repeated items
 """
-force_full_scroll: bool = True
+force_full_scroll: bool = False

@@ -6,6 +6,13 @@
 * Use that, like `.\venv\Scripts\activate`
 * `pip install -r .\requirements.txt`
 
+
+## Tools
+
+isort .
+autoflake --in-place --remove-all-unused-imports -r .
+black .
+
 ## Providers
 
 

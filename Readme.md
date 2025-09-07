@@ -38,3 +38,17 @@ black .
 2. Coger los ytd-rich-item-renderer y contarlos
 3. Hacer el scroll
 4. Coger los ytd-rich-item-renderer NUEVO (usando el indice)
+
+### Notas
+
+En wild project faltan algunos numerajos y veo que se pueden encontrar aqui: https://www.youtube.com/playlist?list=PLzuFY9Ixj9Z6nf7z6t5YmPDTLBgksk8Ts (al menos alguno)
+
+Pensar multiproviders para un canal
+
+#### Queries
+
+SELECT
+videos.title
+FROM videos
+WHERE channel_id = 3
+AND videos.title REGEXP '.*?#([0-9]+).*';

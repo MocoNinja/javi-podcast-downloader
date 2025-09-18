@@ -5,7 +5,8 @@ from app.database.sqlite_repository import (
     select_single,
     update,
 )
-from app.error.errors import NonFatalDatabaseError
+from app.error.errors import NonFatalDatabaseError, DatabaseError, FatalErrorException
+from app.model.video import Video
 from app.model.video_dto import VideoDto
 
 _TABLE = "videos"
@@ -43,7 +44,7 @@ _SQL_UPDATE_VIDEO_DOWNLOADED_FLAG = f"""
 # </editor-fold>
 
 
-def get_not_already_downloaded_videos(channel_id: int, source_id: int) -> list[tuple]:
+def get_not_already_downloaded_videos(channel_id: int, source_id: int) -> list[Video]:
     """
     Find videos that have not been downloaded from channel and source
     :param channel_id: the channel
@@ -87,26 +88,37 @@ def save_videos(videos: list[VideoDto]) -> None:
         save_video(video)
 
 
-def set_video_as_downloaded(video: VideoDto) -> None:
+def set_video_as_downloaded(video: Video) -> None:
     """
     Mark the given video as downloaded in the database
     :param video: the downloaded
     """
     downloaded_status = 1
-    _update_some_params(
+    updated_rows = _update_some_params(
         query=_SQL_UPDATE_VIDEO_DOWNLOADED_FLAG,
-        params=(video.video_id, downloaded_status),
+        params=(downloaded_status, video.id)
     )
+    if updated_rows != 1:
+        raise FatalErrorException(f"Expected flag was not updated for video: {video}")
 
 
-def _fetch_videos(query: str, params: tuple) -> list[tuple]:
+def _fetch_videos(query: str, params: tuple) -> list[Video]:
     """
     Raw query to select multiple items
     :param query: the query
     :param params: the params
-    :return:  the items
+    :return:  the items mapped to VideoDto
     """
-    return select_multiple(query, params)
+    mapped_results = []
+    results = select_multiple(query, params)
+    for result in results:
+        if result[2] == 1:
+            bool_result = True
+        else:
+            bool_result = False
+        dto = Video(result[0], result[1], bool_result, result[3], result[5], result[6])
+        mapped_results.append(dto)
+    return mapped_results
 
 
 def _insert_video(

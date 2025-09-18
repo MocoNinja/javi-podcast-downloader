@@ -62,3 +62,13 @@ class ScrappingError(Exception):
 
     def __str__(self):
         return f"ScrappingError: {self.message}"
+
+class FatalErrorException(Exception):
+    """Raised when we expected something, we don't like what we got instead, and we want everybody to just die"""
+
+    def __init__(self, message="everything went pizdetz"):
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f"FatalErrorException: {self.message}"

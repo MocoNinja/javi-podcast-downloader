@@ -50,6 +50,22 @@ class _Context:
         return matching
 
 
+    def get_channel_by_id(self, channel_id: int) -> Channel:
+        """
+        Retrieve a channel by the id we have in the db. Fail if not found
+        :param channel_id: to find the channel by
+        :return: the whole channel
+        """
+        matching = next(
+            filter(lambda c: c.id == channel_id, self.channels_to_scrape), None
+        )
+        if matching is None:
+            raise MissingItemException(
+                f"Channel with id '{channel_id}' was not found"
+            )
+        return matching
+
+
 """
     Global context to be used after loading (needs to be loaded)
 """
@@ -67,7 +83,7 @@ def get_context() -> _Context:
     return context
 
 
-def _init_context() -> None:
+def init_context() -> None:
     """
     Load the required configuration that is read from database into this context holder
     """

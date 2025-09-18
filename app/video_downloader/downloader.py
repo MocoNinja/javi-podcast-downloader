@@ -14,7 +14,7 @@ from app.service.video_service import (
 DOWNLOADER = None
 
 
-def download_missing_videos_from_channel_and_provider(channel: Channel):
+def download_channel(channel: Channel):
     global DOWNLOADER
     videos_to_download = get_not_already_downloaded_videos(
         channel.id, channel.video_platform.id

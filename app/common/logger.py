@@ -66,7 +66,7 @@ def debug(msg) -> None:
     _ROOT_LOGGER.debug(msg)
 
 
-def _init_root_logger(level) -> None:
+def init_root_logger(level) -> None:
     """
     Configure the logging for the application.
     """

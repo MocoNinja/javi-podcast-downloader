@@ -17,11 +17,11 @@ def get_connection():
     """
     global _conn
     if _conn is None:
-        _load_database()
+        load_database()
     return _conn
 
 
-def _load_database() -> Connection:
+def load_database() -> Connection:
     """
     Obtain a connection to the sqlite database if it was not done before, or just return it so it can be used.
     Failing to obtain a connection is a fatal error and the application is thus terminated.

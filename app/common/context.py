@@ -49,7 +49,6 @@ class _Context:
             )
         return matching
 
-
     def get_channel_by_id(self, channel_id: int) -> Channel:
         """
         Retrieve a channel by the id we have in the db. Fail if not found
@@ -60,9 +59,7 @@ class _Context:
             filter(lambda c: c.id == channel_id, self.channels_to_scrape), None
         )
         if matching is None:
-            raise MissingItemException(
-                f"Channel with id '{channel_id}' was not found"
-            )
+            raise MissingItemException(f"Channel with id '{channel_id}' was not found")
         return matching
 
 

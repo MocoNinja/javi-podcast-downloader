@@ -63,6 +63,7 @@ class ScrappingError(Exception):
     def __str__(self):
         return f"ScrappingError: {self.message}"
 
+
 class FatalErrorException(Exception):
     """Raised when we expected something, we don't like what we got instead, and we want everybody to just die"""
 

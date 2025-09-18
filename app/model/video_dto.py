@@ -7,6 +7,7 @@ class VideoDto:
     """
     The class to represent the information we want to model a video with, so we can scrap, store and download 'em
     """
+
     def __init__(
         self,
         video_url: str,
@@ -34,7 +35,6 @@ class VideoDto:
             self.scrap_timestamp = scrap_timestamp
         if video_upload_datetime is not None:
             self.video_upload_datetime = video_upload_datetime
-
 
     def __repr__(self):
         return f"Video(video_id={self.video_id}, video_title={self.video_title}, video_platform={self.video_platform.name})"

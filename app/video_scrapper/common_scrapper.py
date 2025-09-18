@@ -8,7 +8,7 @@ from app.common.config import force_full_scroll, sleep_between_scroll_seconds
 from app.common.logger import debug, info, is_enabled_for_level
 from app.model.channel import Channel
 from app.model.video_dto import VideoDto
-from app.service.video_service import video_exists_by_video_id, save_videos
+from app.service.video_service import save_videos, video_exists_by_video_id
 
 
 def scrape_channel(channel: Channel, scrapper) -> None:
@@ -32,6 +32,7 @@ def scrape_channel(channel: Channel, scrapper) -> None:
     videos = [x for x in videos if x is not None]
     info(f"Saving filtered scrapped videos: {videos}")
     save_videos(videos)
+
 
 def perform_scroll(driver, curr_page: int) -> tuple[bool, int]:
     """

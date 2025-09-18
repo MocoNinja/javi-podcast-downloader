@@ -12,7 +12,6 @@ from app.service.video_service import (
 )
 
 
-
 def download_channel(channel: Channel):
     downloader = _setup_downloader_for_channel(channel)
     videos_to_download = get_not_already_downloaded_videos(
@@ -22,13 +21,13 @@ def download_channel(channel: Channel):
     debug(f"Videos to download are: {videos_to_download}")
     for video in videos_to_download:
         try:
-            info(f"Downloading and parsing '{video.name}' from '{channel.name}' at '{video.url}...")
+            info(
+                f"Downloading and parsing '{video.name}' from '{channel.name}' at '{video.url}..."
+            )
             ## TODO: aqui hay un porrón de información todo wapa que igual me mola guardar en la tabla de videos...
             ## Además parece que tarda siempre lo mismo asi que por el precio me lo jamo todo
             info_dict = downloader.extract_info(video.url, download=True)
-            upload_time = info_dict.get(
-                "upload_date"
-            )
+            upload_time = info_dict.get("upload_date")
             info(f"Info Found | Upload: {upload_time}")
         except Exception as e:
             error(
@@ -56,17 +55,18 @@ def _setup_downloader_for_channel(channel: Channel) -> ytl_dlp.YoutubeDL:
         "quiet": True,
         "format": "bestaudio",
         "outtmpl": f"{download_dir}/%(upload_date)s_%(title)s.%(ext)s",
-        'keepvideo': False,
+        "keepvideo": False,
     }
-    info(f"Created youtube downloader for channel '{channel.name}' with config: {ytl_dlp_opts}")
-
+    info(
+        f"Created youtube downloader for channel '{channel.name}' with config: {ytl_dlp_opts}"
+    )
 
     return ytl_dlp.YoutubeDL(ytl_dlp_opts)
 
 
-
-
-def _get_download_path_for_channel(channel: Channel, root_download_folder: str = "downloads"):
+def _get_download_path_for_channel(
+    channel: Channel, root_download_folder: str = "downloads"
+):
     """
     Assemble the download path for the videos based on a channel configuration and a root download folder
     :param channel: to get the configuration from database
@@ -82,5 +82,3 @@ def _get_download_path_for_channel(channel: Channel, root_download_folder: str =
         channel.destination_folder,
     )
     return dest_dir
-
-

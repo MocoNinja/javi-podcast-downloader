@@ -5,7 +5,7 @@ from app.database.sqlite_repository import (
     select_single,
     update,
 )
-from app.error.errors import NonFatalDatabaseError, DatabaseError, FatalErrorException
+from app.error.errors import FatalErrorException, NonFatalDatabaseError
 from app.model.video import Video
 from app.model.video_dto import VideoDto
 
@@ -95,8 +95,7 @@ def set_video_as_downloaded(video: Video) -> None:
     """
     downloaded_status = 1
     updated_rows = _update_some_params(
-        query=_SQL_UPDATE_VIDEO_DOWNLOADED_FLAG,
-        params=(downloaded_status, video.id)
+        query=_SQL_UPDATE_VIDEO_DOWNLOADED_FLAG, params=(downloaded_status, video.id)
     )
     if updated_rows != 1:
         raise FatalErrorException(f"Expected flag was not updated for video: {video}")
